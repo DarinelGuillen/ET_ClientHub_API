@@ -13,7 +13,6 @@ export class MysqlAlertRepository implements UserRepository {
       const usersData = data;
       console.log(usersData);
 
-      // Map the raw data to complete user objects
       const users: Users[] = usersData.map((userData: any) => {
         const {
           id,
@@ -22,7 +21,6 @@ export class MysqlAlertRepository implements UserRepository {
           mother_last_name,
           gender,
           age,
-          // Add the address and preferences properties
           street,
           interior_number,
           exterior_number,
@@ -37,7 +35,6 @@ export class MysqlAlertRepository implements UserRepository {
           books,
         } = userData;
 
-        // Return a complete user object that includes address and preferences data
         return {
           id,
           name,
@@ -109,7 +106,7 @@ export class MysqlAlertRepository implements UserRepository {
       console.log(`🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:110 🥓 MysqlAlertRepository 🥓 userId||`, userId)
   
       const createAddressParams: any[] = [
-        userId, // Replace this with the `userId` after the user is inserted
+        userId, 
         street,
         interior_number,
         exterior_number,
@@ -118,7 +115,7 @@ export class MysqlAlertRepository implements UserRepository {
         state
       ];
       const createPreferencesParams: any[] = [
-        userId, // Replace this with the `userId` after the user is inserted
+        userId, 
         hobby,
         destinations,
         roomtype,
@@ -225,16 +222,7 @@ export class MysqlAlertRepository implements UserRepository {
         updateUserResult
       );
   
-      // if (
-      //   updateUserResult === null ||
-      //   updateUserResult.affectedRows === 0 ||
-      //   updateAddressResult === null ||
-      //   updateAddressResult.affectedRows === 0 ||
-      //   updatePreferencesResult === null ||
-      //   updatePreferencesResult.affectedRows === 0
-      // ) {
-      //   return null;
-      // }
+     
   
       return new Users(
         data.id,

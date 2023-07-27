@@ -14,7 +14,6 @@ const config = {
   connectionLimit: 8,
 };
 
-// Crear el pool de conexiones
 const pool = mysql.createPool(config);
 
 export async function query(sql: string, params: any[]) {
