@@ -5,14 +5,11 @@ import { UserRepository } from "../domain/UserRepository";
 export class MysqlAlertRepository implements UserRepository {
   async getUsers(): Promise<Users[] | null> {
     const sql ="SELECT u.*, a.*, p.* FROM users u LEFT JOIN address a ON u.id = a.id_user LEFT JOIN preferences p ON u.id = p.id_user";
-    console.log(`🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:11 🥓 MysqlAlertRepository 🥓 getUsers 🥓 sql||`, sql)
     const params: any[] = [];
 
     try {
       const [data]: any = await query(sql, params);
       const usersData = data;
-      console.log(usersData);
-
       const users: Users[] = usersData.map((userData: any) => {
         const {
           id,
@@ -103,7 +100,6 @@ export class MysqlAlertRepository implements UserRepository {
       const [userResult]: any = await query(createUserSql, createUserParams);
   
       const userId = userResult.insertId;
-      console.log(`🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:110 🥓 MysqlAlertRepository 🥓 userId||`, userId)
   
       const createAddressParams: any[] = [
         userId, 
@@ -123,11 +119,7 @@ export class MysqlAlertRepository implements UserRepository {
         trips,
         books
       ];
-      console.log(`🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:112 🥓 MysqlAlertRepository 🥓 createAddressParams||`, createAddressParams)
   
-      console.log(`🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:124 🥓 MysqlAlertRepository 🥓 createPreferencesParams||`, createPreferencesParams)
-      console.log("createAddressParams:", createAddressParams);
-      console.log(`🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:133 🥓 MysqlAlertRepository 🥓 userId||`, userId)
       await query(createAddress, createAddressParams);
       await query(createPreferences, createPreferencesParams);
   
@@ -209,18 +201,6 @@ export class MysqlAlertRepository implements UserRepository {
         updateAddressResult,
         updatePreferencesResult,
       ] = await Promise.all(updatePromises);
-      console.log(
-        "🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:210 🥓 MysqlAlertRepository 🥓 updateUser 🥓 updatePreferencesResult||",
-        updatePreferencesResult
-      );
-      console.log(
-        "🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:210 🥓 MysqlAlertRepository 🥓 updateUser 🥓 updateAddressResult||",
-        updateAddressResult
-      );
-      console.log(
-        "🤨😶🤐|| 🥓 file: MysqlAlertRepository.ts:210 🥓 MysqlAlertRepository 🥓 updateUser 🥓 updateUserResult||",
-        updateUserResult
-      );
   
      
   

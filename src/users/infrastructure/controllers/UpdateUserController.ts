@@ -6,12 +6,8 @@ export class UpdateUserController {
 
   async run(req: Request, res: Response) {
     const { data } = req.body;  
-    console.log(`🤨😶🤐|| 🥓 file: UpdateUserController.ts:9 🥓 UpdateUserController 🥓 run 🥓 data||`, data)
-
     try {
       const user = await this.updateAlertsUseCase.run(  data);  
-      console.log(`🤨😶🤐|| 🥓 file: UpdateUserController.ts:11 🥓 UpdateUserController 🥓 run 🥓 user||`, user);
-
       if (user) {
         res.status(201).send({
           status: "success",
