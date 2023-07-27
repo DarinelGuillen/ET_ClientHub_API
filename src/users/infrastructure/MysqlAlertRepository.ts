@@ -4,7 +4,7 @@ import { UserRepository } from "../domain/UserRepository";
 
 export class MysqlAlertRepository implements UserRepository {
   async getUsers(): Promise<Users[] | null> {
-    const sql ="SELECT u.*, a.*, p.* FROM users u LEFT JOIN address a ON u.id = a.id_user LEFT JOIN preferences p ON u.id = p.id_user";
+    const sql = "SELECT u.*, a.*, p.* FROM users u LEFT JOIN address a ON u.id = a.id_user LEFT JOIN preferences p ON u.id = p.id_user";
     const params: any[] = [];
 
     try {
@@ -84,9 +84,9 @@ export class MysqlAlertRepository implements UserRepository {
     books: string
   ): Promise<Users | null> {
     const createUserSql = "INSERT INTO users (name, last_name, mother_last_name, gender, age) VALUES (?, ?, ?, ?, ?)";
-    const createAddress =  "INSERT INTO address (id_user, street, interior_number, exterior_number, neighborhood, municipality, state) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const createAddress = "INSERT INTO address (id_user, street, interior_number, exterior_number, neighborhood, municipality, state) VALUES (?, ?, ?, ?, ?, ?, ?)";
     const createPreferences = "INSERT INTO preferences (id_user, hobby, destinations, roomtype, income, trips, books) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  
+
     const createUserParams: any[] = [
       name,
       last_name,
@@ -94,15 +94,15 @@ export class MysqlAlertRepository implements UserRepository {
       gender,
       age
     ];
-    
-  
+
+
     try {
       const [userResult]: any = await query(createUserSql, createUserParams);
-  
+
       const userId = userResult.insertId;
-  
+
       const createAddressParams: any[] = [
-        userId, 
+        userId,
         street,
         interior_number,
         exterior_number,
@@ -111,7 +111,7 @@ export class MysqlAlertRepository implements UserRepository {
         state
       ];
       const createPreferencesParams: any[] = [
-        userId, 
+        userId,
         hobby,
         destinations,
         roomtype,
@@ -119,10 +119,10 @@ export class MysqlAlertRepository implements UserRepository {
         trips,
         books
       ];
-  
+
       await query(createAddress, createAddressParams);
       await query(createPreferences, createPreferencesParams);
-  
+
       return new Users(
         userId,
         name,
@@ -148,9 +148,6 @@ export class MysqlAlertRepository implements UserRepository {
       return null;
     }
   }
-  
-  
-  
 
   async updateUser(data: Partial<Users>): Promise<Users | null> {
     try {
@@ -162,9 +159,9 @@ export class MysqlAlertRepository implements UserRepository {
         data.mother_last_name,
         data.gender,
         data.age,
-        data.id,  
+        data.id,
       ];
-  
+
       const updateAddressSql =
         "UPDATE address SET street=?, interior_number=?, exterior_number=?, neighborhood=?, municipality=?, state=? WHERE id_user=?";
       const updateAddressParams: any[] = [
@@ -174,9 +171,9 @@ export class MysqlAlertRepository implements UserRepository {
         data.neighborhood,
         data.municipality,
         data.state,
-        data.id,  
+        data.id,
       ];
-  
+
       const updatePreferencesSql =
         "UPDATE preferences SET hobby=?, destinations=?, roomtype=?, income=?, trips=?, books=? WHERE id_user=?";
       const updatePreferencesParams: any[] = [
@@ -186,24 +183,23 @@ export class MysqlAlertRepository implements UserRepository {
         data.income,
         data.trips,
         data.books,
-        data.id,  
+        data.id,
       ];
-  
+
       const updatePromises = [
         query(updateUserSql, updateUserParams),
         query(updateAddressSql, updateAddressParams),
         query(updatePreferencesSql, updatePreferencesParams),
       ];
-      
-  
-      const [
-        updateUserResult,
-        updateAddressResult,
-        updatePreferencesResult,
-      ] = await Promise.all(updatePromises);
-  
-     
-  
+
+
+      const [updateUserResult, updateAddressResult, updatePreferencesResult,] = await Promise.all(updatePromises);
+      console.log(updatePreferencesResult)
+      console.log(updateAddressResult)
+      console.log(updateUserResult)
+
+
+
       return new Users(
         data.id,
         data.name,
@@ -228,7 +224,29 @@ export class MysqlAlertRepository implements UserRepository {
       return null;
     }
   }
-  
-  
+
+  async deleteUser(userId: number): Promise<boolean> {
+    try {
+      const deleteUserSql = "DELETE FROM users WHERE id = ?";
+      const deleteUserParams: any[] = [userId];
+
+      const deleteAddressSql = "DELETE FROM address WHERE id_user = ?";
+      const deleteAddressParams: any[] = [userId];
+
+      const deletePreferencesSql = "DELETE FROM preferences WHERE id_user = ?";
+      const deletePreferencesParams: any[] = [userId];
+
+      await Promise.all([
+        query(deleteUserSql, deleteUserParams),
+        query(deleteAddressSql, deleteAddressParams),
+        query(deletePreferencesSql, deletePreferencesParams),
+      ]);
+
+      return true;  
+    } catch (error) {
+      console.error("Error in deleteUser:", error);
+      return false;  
+    }
+  }
 
 }

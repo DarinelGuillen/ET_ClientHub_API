@@ -2,7 +2,7 @@ import { Users } from "../domain/users";
 import { UserRepository } from "../domain/UserRepository";
 
 export class CreateUserUseCase {
-  constructor(readonly userRepository: UserRepository) {}
+  constructor(readonly userRepository: UserRepository) { }
 
   async run(
     name: string,

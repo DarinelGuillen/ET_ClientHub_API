@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { UpdateUserUseCase } from "../../application/UpdateUserUseCase";
 
 export class UpdateUserController {
-  constructor(readonly updateAlertsUseCase: UpdateUserUseCase) {}
+  constructor(readonly updateAlertsUseCase: UpdateUserUseCase) { }
 
   async run(req: Request, res: Response) {
-    const { data } = req.body;  
+    const { data } = req.body;
     try {
-      const user = await this.updateAlertsUseCase.run(  data);  
+      const user = await this.updateAlertsUseCase.run(data);
       if (user) {
         res.status(201).send({
           status: "success",

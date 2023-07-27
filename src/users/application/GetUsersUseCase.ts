@@ -6,7 +6,7 @@ export class GetUsersUseCase {
 
   async run(): Promise<Partial<Users>[] | null> {
     try {
-      const user = await this.userRepository.getUsers( );
+      const user = await this.userRepository.getUsers();
       return user;
     } catch (error) {
       return null;

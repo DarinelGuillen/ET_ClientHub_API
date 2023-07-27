@@ -8,7 +8,7 @@ const app = express();
 const signale = new Signale();
 
 app.use(express.json());
-app.use(cors()); 
+app.use(cors());
 app.use("/users", userRouter);
 
 app.listen(3000, () => {

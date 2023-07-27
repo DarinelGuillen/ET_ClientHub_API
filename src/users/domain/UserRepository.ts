@@ -23,5 +23,7 @@ export interface UserRepository {
 
   getUsers(): Promise<Partial<Users>[] | null>;
 
-  updateUser( data: Partial<Users>): Promise<Users | null>;
+  updateUser(data: Partial<Users>): Promise<Users | null>;
+
+  deleteUser(userId: number): Promise<Boolean | null>;
 }
